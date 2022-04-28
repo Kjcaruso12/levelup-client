@@ -1,0 +1,11 @@
+.leave_button {
+    background-color: red;
+    color: white;
+    margin-left: 1rem;
+}
+
+.join_button {
+    background-color: green;
+    color: white;
+    margin-left: 1rem;
+}
