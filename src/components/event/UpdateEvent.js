@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from 'react-router-dom'
-import { createEvent } from './EventManager'
+import { putEvent, getCurrentEvent } from './EventManager'
 import { getGames } from "../game/GameManager"
+import { useParams } from "react-router-dom"
 
 
-export const EventForm = () => {
+export const EditEvent = () => {
     const history = useHistory()
+    const eventId = useParams()
     const [games, setGames] = useState([])
+    const [currentEvent, setCurrentEvent] = useState()
 
-    const [currentEvent, setCurrentEvent] = useState({
-        description: "",
-        date: "",
-        time: "",
-        gameId: 0,
-    })
+
+    useEffect(
+        () => {
+            getCurrentEvent(eventId.eventId)
+            .then(setCurrentEvent)
+        }, []
+        )
 
     useEffect(
         () => {
@@ -28,6 +32,7 @@ export const EventForm = () => {
     }
 
     return (
+        currentEvent?
         <form className="eventForm">
             <h2 className="eventForm__title">Schedule New Event</h2>
             <fieldset>
@@ -60,7 +65,7 @@ export const EventForm = () => {
             <fieldset>
                 <select className="form-control"
                     name="gameId"
-                    value={currentEvent.gameId}
+                    value={currentEvent.game.id}
                     placeholder="Select a Game"
                     onChange={changeEventState}
                 >
@@ -77,17 +82,19 @@ export const EventForm = () => {
                     evt.preventDefault()
 
                     const event = {
+                        id: currentEvent.id,
                         description: currentEvent.description,
                         date: currentEvent.date,
                         time: currentEvent.time,
-                        game: parseInt(currentEvent.gameId)
+                        game: parseInt(currentEvent.game.id)
                     }
 
                     // Send POST request to your API
-                    createEvent(event)
-                        .then(() => history.push("/events"))
+                    putEvent(event)
+                        .then(() => history.push(`/events/${eventId.eventId}`))
                 }}
                 className="btn btn-4 icon-create">Create</button>
         </form>
+        :""
     )
 }
