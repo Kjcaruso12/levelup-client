@@ -47,3 +47,12 @@ export const putGame = (game) => {
         body: JSON.stringify(game)
     })
 }
+
+export const deleteGame = (gameId) => {
+    return fetch(`http://localhost:8000/posts/${gameId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("lu_token")}`
+        }
+    });
+};

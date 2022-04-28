@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { getEvents } from "./EventManager.js"
+import { deleteEvent, getEvents } from "./EventManager.js"
 
-export const EventList = (props) => {
+export const EventList = () => {
     const [events, setEvents] = useState([])
     const history = useHistory()
 
     useEffect(() => {
         getEvents().then(data => setEvents(data))
     }, [])
+
+    const handleDelete = (eventId) => {
+        const filteredEvent = events.filter(event => event.id != eventId)
+        setEvents(filteredEvent)
+        deleteEvent(eventId)
+    }
 
     return (
         <article className="events">
@@ -23,6 +29,13 @@ export const EventList = (props) => {
                         <div className="event__title">{event.game.title} hosted by {event.organizer.user.first_name} {event.organizer.user.last_name}</div>
                         <div className="event_description">{event.description}</div>
                         <div className="event__date">{event.date} at {event.time}</div>
+                        <button className="delete-button"
+                        onClick={() => {
+                            handleDelete(event.id)
+                        }}
+                        >
+                        Delete
+                        </button>
                     </section>
                 })
             }
