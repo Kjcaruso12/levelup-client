@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { useHistory } from "react-router-dom"
 import { deleteGame, getGames } from "./GameManager.js"
 
@@ -26,15 +27,17 @@ export const GameList = (props) => {
             {
                 games?.map(game => {
                     return <section key={`game--${game.id}`} className="game">
-                        <div className="game__title">{game.title} by {game.maker}</div>
+                        <Link to={`/games/${game.id}`}>
+                            <div className="game__title">{game.title} by {game.maker}</div>
+                        </Link>
                         <div className="game__players">{game.number_of_players} players needed</div>
                         <div className="game__skillLevel">Skill level is {game.skill_level}</div>
                         <button className="delete-button"
-                        onClick={() => {
-                        handleDelete(game.id)
-                        }}
+                            onClick={() => {
+                                handleDelete(game.id)
+                            }}
                         >
-                        Delete
+                            Delete
                         </button>
                     </section>
                 })

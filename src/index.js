@@ -5,10 +5,8 @@ import { LevelUp } from "./components/LevelUp.js"
 import "./index.css"
 
 ReactDOM.render(
-    <React.StrictMode>
         <Router>
             <LevelUp />
-        </Router>
-    </React.StrictMode>,
+        </Router>,
     document.getElementById("root")
 )
